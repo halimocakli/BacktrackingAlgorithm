@@ -11,19 +11,19 @@ int main(void)
 {
 
     int labirent[SATIR][SUTUN] ={
-                    {1,1,1,1,1,1,1,1,1,1,1,1},
-		            {1,0,0,1,0,0,0,0,0,0,0,1},
-		            {1,0,0,1,1,0,1,0,1,1,1,1},
-		            {1,0,0,0,1,0,1,0,1,0,1,1},
+                    		{1,1,1,1,1,1,1,1,1,1,1,1},
+		            	{1,0,0,1,0,0,0,0,0,0,0,1},
+		            	{1,0,0,1,1,0,1,0,1,1,1,1},
+		            	{1,0,0,0,1,0,1,0,1,0,1,1},
 			        {1,0,0,1,1,0,1,0,0,0,0,1},
-		            {1,1,1,1,0,0,1,1,1,1,1,1}
-		            };
+		            	{1,1,1,1,0,0,1,1,1,1,1,1}
+		            	};
 
     printf("...Ana Labirent Yazdiriiliyor...\n\n");
 
     labirentYazdir(labirent);
 
-    if (izci(labirent, 0, 0) == 1)              //izci fonksiyonundan 1 deðeri dönmesi koþulu
+    if (izci(labirent, 0, 0) == 1)              //izci fonksiyonundan 1 deÃ°eri dÃ¶nmesi koÃ¾ulu
     {
         printf("\nLabirent Tamamlandi\a\n\n");
         printf("...Tamamlanan Labirent Yadiriliyor...\n\n");
