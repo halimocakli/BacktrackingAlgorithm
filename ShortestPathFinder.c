@@ -1,10 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
-#define R_SIZE 6
-#define C_SIZE 12
-
-bool ShortestPathFinderUtility(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE], int x, int y);
-void PrintSolutionMatrix(int matrix[R_SIZE][C_SIZE]);
+#define R_SIZE 6	// Satır Sayısı
+#define C_SIZE 12	// Sütun Sayısı
 
 bool IsSafe(int _mainMatrix[][C_SIZE], int x, int y)
 {
@@ -15,19 +12,6 @@ bool IsSafe(int _mainMatrix[][C_SIZE], int x, int y)
 	else
 	{
 		return false;
-	}
-}
-
-bool ShortestPathFinder(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE])
-{
-	if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, 0, 0) == false)
-	{
-		return false;
-	}
-	else
-	{
-		PrintSolutionMatrix(_visitedCells);
-		return true;
 	}
 }
 
@@ -71,7 +55,19 @@ bool ShortestPathFinderUtility(int _mainMatrix[][C_SIZE], int _visitedCells[][C_
 	return false;
 }
 
-void PrintSolutionMatrix(int matrix[R_SIZE][C_SIZE])
+bool ShortestPathFinder(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE])
+{
+	if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, 0, 0) == false)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void PrintSolutionMatrix(int _solutionMatrix[R_SIZE][C_SIZE])
 {
 	int i;
 	int j;
@@ -79,7 +75,7 @@ void PrintSolutionMatrix(int matrix[R_SIZE][C_SIZE])
 	{
 		for (j = 0; j < C_SIZE; j++)
 		{
-			printf("%d ", matrix[i][j]);
+			printf("%d ", _solutionMatrix[i][j]);
 		}
 		printf("\n");
 	}
@@ -100,8 +96,14 @@ int main()
 										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-	
-	ShortestPathFinder(mainMatrix, visitedCells);
 
+	if (ShortestPathFinder(mainMatrix, visitedCells) == true)
+	{
+		PrintSolutionMatrix(visitedCells);
+	}
+	else
+	{
+		printf("Path doesn't exist");
+	}
 	return 0;
 }
