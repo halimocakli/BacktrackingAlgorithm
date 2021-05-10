@@ -1,105 +1,107 @@
+#include <stdbool.h>
 #include <stdio.h>
+#define R_SIZE 6
+#define C_SIZE 12
 
-#define SATIR (6)
-#define SUTUN (12)
+bool ShortestPathFinderUtility(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE], int x, int y);
+void PrintSolutionMatrix(int matrix[R_SIZE][C_SIZE]);
 
-void labirentYazdir(int labirent[SATIR][SUTUN]);
-
-int izci(int labirent[SATIR][SUTUN], int x, int y);
-
-int main(void)
+bool IsSafe(int _mainMatrix[][C_SIZE], int x, int y)
 {
-
-    int labirent[SATIR][SUTUN] ={
-                    		{1,1,1,1,1,1,1,1,1,1,1,1},
-		            	{1,0,0,1,0,0,0,0,0,0,0,1},
-		            	{1,0,0,1,1,0,1,0,1,1,1,1},
-		            	{1,0,0,0,1,0,1,0,1,0,1,1},
-			        {1,0,0,1,1,0,1,0,0,0,0,1},
-		            	{1,1,1,1,0,0,1,1,1,1,1,1}
-		            	};
-
-    printf("...Ana Labirent Yazdiriiliyor...\n\n");
-
-    labirentYazdir(labirent);
-
-    if (izci(labirent, 0, 0) == 1)              //izci fonksiyonundan 1 deðeri dönmesi koþulu
-    {
-        printf("\nLabirent Tamamlandi\a\n\n");
-        printf("...Tamamlanan Labirent Yadiriliyor...\n\n");
-
-        labirentYazdir(labirent);   //Sonuclandirilan labirent yazdiriliyor
-
-    }
-
-    return 0;
+	if (x >= 0 && x < R_SIZE && y >= 0 && y < C_SIZE && _mainMatrix[x][y] == 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
-void labirentYazdir(int labirent[SATIR][SUTUN]) //izci fonksiyonu calistirilmadan once ve calistirildiktan sonra diziyi yazdirir
+bool ShortestPathFinder(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE])
 {
-
-    for (int i = 0; i < SATIR; i++)
-    {
-        for (int j = 0; j < SUTUN; j++)
-        {
-            printf("%d ", labirent[i][j]);
-        }
-
-    printf("\n");
-    }
+	if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, 0, 0) == false)
+	{
+		return false;
+	}
+	else
+	{
+		PrintSolutionMatrix(_visitedCells);
+		return true;
+	}
 }
 
-int izci(int labirent[SATIR][SUTUN], int x, int y)
+bool ShortestPathFinderUtility(int _mainMatrix[][C_SIZE], int _visitedCells[][C_SIZE], int x, int y)
 {
-        labirent[x][y] = 5; ///ilk gelen deger (0.0)
+	if (x == (R_SIZE - 1) && y == (C_SIZE - 1) && _mainMatrix[x][y] == 1)
+	{
+		_visitedCells[x][y] = 1;
+		return true;
+	}
 
-    if (x == SATIR - 1 && y == SUTUN - 1) ///Sonlandirma Kosulu-->x=5 ve y=11 oldugunda yani matris tamamlandiginda durur
-    {
-        return 1;
-    }
+	if (IsSafe(_mainMatrix, x, y) == true)
+	{
+		if (_visitedCells[x][y] == 1)
+		{
+			return false;
+		}
 
-    if (y + 1 < SUTUN && labirent[x][y + 1] == 1)   ///Saga Dogru Gidis
-    {
-        if (izci(labirent, x, y + 1))
-        {
-            return 1;
-        }
-    }
+		_visitedCells[x][y] = 1;
 
-    if (x + 1 < SATIR && labirent[x + 1][y] == 1)   ///Asagi Yone Gidis-Saga Gitmeden Once Labirent'ten Cikmadigini Dogrular
-    {
-        if (izci(labirent, x + 1, y))
-        {
-            return 1;
-        }
-    }
+		if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, x + 1, y) == true)
+		{
+			return true;
+		}
+		if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, x, y + 1) == true)
+		{
+			return true;
+		}
+		if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, x - 1, y) == true)
+		{
+			return true;
+		}
+		if (ShortestPathFinderUtility(_mainMatrix, _visitedCells, x, y - 1) == true)
+		{
+			return true;
+		}
 
-    /*if (y + 1 < SUTUN && labirent[x][y + 1] == 1)   ///Saga Dogru Gidis
-    {
-        if (izci(labirent, x, y + 1))
-        {
-            return 1;
-        }
-    }*/
+		_visitedCells[x][y] = 0;
+		return false;
+	}
+	return false;
+}
 
-    if (x - 1 >= 0 && labirent[x - 1][y] == 1) ///Yukari Dogru Gidis
-    {
-        if (izci(labirent, x - 1, y))
-        {
-            return 1;
-        }
-    }
+void PrintSolutionMatrix(int matrix[R_SIZE][C_SIZE])
+{
+	int i;
+	int j;
+	for (i = 0; i < R_SIZE; i++)
+	{
+		for (j = 0; j < C_SIZE; j++)
+		{
+			printf("%d ", matrix[i][j]);
+		}
+		printf("\n");
+	}
+}
 
-    if (y - 1 >= 0 && labirent[x][y - 1] == 1)  ///Sola Dogru Gidis
-    {
-        if (izci(labirent, x, y - 1))
-        {
-            return 1;
-        }
-    }
+int main()
+{
+	int mainMatrix[R_SIZE][C_SIZE] = {{1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0},
+									  {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0},
+									  {1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0},
+									  {0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1},
+									  {0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1},
+									  {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-    labirent[x][y] = 1; /*Eger Gittigi Yonden Devam Edemiyorsa ve Geri Donecekse Geri Donerken
-                        Gittigi Yanlis Yolu Duzelterek (1 Yazarak) Doner (Backtracking)*/
+	int visitedCells[R_SIZE][C_SIZE] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+	
+	ShortestPathFinder(mainMatrix, visitedCells);
 
-    return 0;
+	return 0;
 }
